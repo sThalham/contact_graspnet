@@ -12,14 +12,14 @@ fi
 
 # Remove existing container instances to prevent conflicts when starting
 if [ "$(docker ps -a --quiet --filter status=exited --filter name=contact_graspnet_final)" ]; then
-    docker rm ros_ml_container > /dev/null
+    docker rm contact_graspnet_final > /dev/null
 fi
 
 # need to set that if cam cannot be found?
 # udevadm control --reload-rules && udevadm trigger
 
 xhost +local:docker
-#docker build -t contact_graspnet_tf22 .
+docker build -t contact_graspnet_final .
 docker run --gpus all --network=host --env="DISPLAY" --env="QT_X11_NO_MITSHM=1"  --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" --name=contact_graspnet_final -t -d -v /home/stefan/contact_graspnet:/contact_graspnet -v /dev:/dev --device-cgroup-rule "c 81:* rmw"  --device-cgroup-rule "c 189:* rmw" contact_graspnet_final
 #docker run --gpus all --network=host --name=ros_tf -t -d ros_tf
 xhost -local:root

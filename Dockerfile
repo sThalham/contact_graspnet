@@ -1,6 +1,6 @@
 #FROM tensorflow/tensorflow:2.10.1-gpu
 FROM tensorflow/tensorflow:2.3.4-gpu
-FROM tensorflow/tensorflow:2.2.0-gpu # try at some point
+#FROM tensorflow/tensorflow:2.2.0-gpu # try at some point
 
 MAINTAINER Stefan Thalhammer (thalhamm@technikum-wien.at)
 ENV DEBIAN_FRONTEND noninteractive
@@ -80,12 +80,17 @@ RUN rosdep init && \
 RUN apt-get update && apt-get install --no-install-recommends -y --allow-unauthenticated \
      python3-catkin-tools \
      python3-pip \
-     python3-all-dev \
-     python3-catkin-pkg-module \
+     python3-dev \
+     python3-catkin-pkg \
      python3-rospkg-modules \
      python3-empy \
+     && rm -rf /var/lib/apt/lists/*
+
+
+RUN apt-get update && apt-get install --no-install-recommends -y --allow-unauthenticated \
      ros-melodic-desktop-full --fix-missing \
      ros-melodic-realsense2-camera \
+     ros-melodic-ros-numpy \
      && rm -rf /var/lib/apt/lists/*
 
 # tf2_ros import error: https://answers.ros.org/question/326226/importerror-dynamic-module-does-not-define-module-export-function-pyinit__tf2/
